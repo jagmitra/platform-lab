@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: policies
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            fleet: lab
+  template:
+    metadata:
+      name: 'policies-{{.name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/jagmitra/platform-lab.git
+        targetRevision: main
+        path: policies
+      destination:
+        server: '{{.server}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - SkipDryRunOnMissingResource=true
+        retry:
+          limit: 5
+          backoff: { duration: 30s, factor: 2, maxDuration: 5m }
