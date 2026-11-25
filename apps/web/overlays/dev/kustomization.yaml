@@ -8,5 +8,5 @@ replicas:
 configMapGenerator:
   - name: web-content
     behavior: replace
-    literals:
-      - index.html=<h1>Hello from DEV</h1>
+    files:
+      - index.html

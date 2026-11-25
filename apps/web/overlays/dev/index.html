@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>web · dev</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --text: #1a1d23; --muted: #5f6673;
+    --border: #e3e6eb; --accent: #b45309; --accent-bg: #fef3c7; --ok: #16a34a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115; --card: #171a21; --text: #e8eaee; --muted: #9aa1ad;
+      --border: #262a33; --accent: #f59e0b; --accent-bg: #3a2a0a; --ok: #22c55e;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6; padding: 32px 20px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .brand { color: var(--muted); font-weight: 500; }
+  .brand b { color: var(--text); }
+  .badge {
+    background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent);
+    padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .05em;
+  }
+  h1 { font-size: clamp(32px, 6vw, 48px); line-height: 1.15; margin-bottom: 12px; }
+  .sub { color: var(--muted); font-size: 18px; max-width: 600px; margin-bottom: 36px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .label { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .value { font-size: 20px; font-weight: 600; display: flex; align-items: center; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%; background: var(--ok); margin-right: 10px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 20%, transparent);
+  }
+  h2 { font-size: 16px; margin-bottom: 16px; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .step { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 14px; }
+  .step small { display: block; color: var(--muted); font-size: 12px; }
+  .arrow { color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; font-size: 13px; color: var(--muted); }
+  footer { margin-top: 32px; font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">platform-lab / <b>web</b></div>
+    <span class="badge">DEV</span>
+  </header>
+
+  <h1>Hello from DEV</h1>
+  <p class="sub">This page is deployed by Argo CD from Git. Dev is where changes are tried out before they reach prod.</p>
+
+  <div class="grid">
+    <div class="card"><div class="label">Environment</div><div class="value">dev</div></div>
+    <div class="card"><div class="label">Replicas</div><div class="value">1</div></div>
+    <div class="card"><div class="label">Version</div><div class="value">v1.0.0</div></div>
+    <div class="card"><div class="label">Status</div><div class="value"><span class="dot"></span>Healthy</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom: 24px;">
+    <h2>How this page got here</h2>
+    <div class="flow">
+      <div class="step">Git commit<small>platform-lab repo</small></div>
+      <span class="arrow">→</span>
+      <div class="step">Argo CD<small>mgmt cluster</small></div>
+      <span class="arrow">→</span>
+      <div class="step">Kustomize overlay<small>overlays/dev</small></div>
+      <span class="arrow">→</span>
+      <div class="step">dev cluster<small>namespace: web</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Built with</h2>
+    <div class="chips">
+      <span class="chip">kind</span><span class="chip">Argo CD</span><span class="chip">ApplicationSets</span>
+      <span class="chip">Kustomize</span><span class="chip">Kyverno</span><span class="chip">nginx 1.27</span>
+    </div>
+  </div>
+
+  <footer>
+    <span>Page loaded <span id="loaded"></span></span>
+    <span>nginx 1.27 · v1.0.0</span>
+  </footer>
+</div>
+<script>
+  document.getElementById('loaded').textContent = new Date().toLocaleString();
+</script>
+</body>
+</html>
