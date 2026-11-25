@@ -18,7 +18,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/jagmitra/platform-lab.git
-        targetRevision: main
+        targetRevision: '{{index .metadata.labels "revision"}}'
         path: 'apps/web/overlays/{{index .metadata.labels "env"}}'
       destination:
         server: '{{.server}}'
