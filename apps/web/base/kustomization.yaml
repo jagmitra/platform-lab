@@ -5,5 +5,12 @@ resources:
   - service.yaml
 configMapGenerator:
   - name: web-content
-    literals:
-      - index.html=<h1>Hello from base</h1>
+    files:
+      - site/index.html
+      - site/architecture.html
+      - site/policies.html
+      - site/style.css
+      - site/app.js
+  - name: web-env
+    files:
+      - env.json

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policies · web</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="brand">platform-lab <span>/ web</span></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="policies.html">Policies</a>
+  </nav>
+  <span class="badge" data-env="label">ENV</span>
+</div></header>
+
+<main class="wrap">
+  <h1>Policies</h1>
+  <p class="sub">Guardrails Kyverno enforces on every cluster in the fleet.</p>
+
+  <div class="card">
+    <h2>Active policies</h2>
+    <div class="table-wrap"><table>
+      <tr><th>Policy</th><th>What it checks</th><th>Mode</th><th>Scope</th></tr>
+      <tr>
+        <td><code>require-requests-limits</code></td>
+        <td>Every container sets CPU and memory requests and a memory limit</td>
+        <td><span class="pill" data-env="policyMode">-</span></td>
+        <td>App namespaces; system namespaces excluded</td>
+      </tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>How a request is checked</h2>
+    <ul class="list">
+      <li>RBAC decides whether you may create the resource in that namespace</li>
+      <li>Kyverno’s admission webhook checks the resource against the policy</li>
+      <li><strong>Audit</strong> allows it and records a PolicyReport; <strong>Deny</strong> rejects it</li>
+      <li>The reports controller also scans existing resources in the background</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Test it yourself</h2>
+<pre>kubectl -n intern-sandbox apply -f tests/policies/bad-pod.yaml --as=intern
+kubectl get policyreport -A</pre>
+  </div>
+</main>
+
+<footer><div class="wrap">Served by nginx 1.27 · <span data-env="version">-</span></div></footer>
+<script src="app.js"></script>
+</body>
+</html>

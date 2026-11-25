@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architecture · web</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="brand">platform-lab <span>/ web</span></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="policies.html">Policies</a>
+  </nav>
+  <span class="badge" data-env="label">ENV</span>
+</div></header>
+
+<main class="wrap">
+  <h1>Architecture</h1>
+  <p class="sub">How the lab is put together, from Git to this page.</p>
+
+  <div class="card">
+    <h2>Clusters</h2>
+    <div class="table-wrap"><table>
+      <tr><th>Cluster</th><th>Role</th><th>Runs</th></tr>
+      <tr><td><code>mgmt</code></td><td>Hub</td><td>Argo CD, ApplicationSets, cluster registrations</td></tr>
+      <tr><td><code>dev</code></td><td>Workload, env=dev</td><td>Kyverno, policies, web (1 pod)</td></tr>
+      <tr><td><code>prod</code></td><td>Workload, env=prod</td><td>Kyverno, policies, web (2 pods)</td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>Inside this cluster</h2>
+    <ul class="list">
+      <li>Namespace <code>web</code></li>
+      <li>Deployment <code>web</code> → ReplicaSet → <span data-env="replicas">N</span> pod(s) → container <code>nginx:1.27</code></li>
+      <li>Service <code>web</code> gives the pods one stable name and port</li>
+      <li>ConfigMaps <code>web-content</code> (site files) and <code>web-env</code> (this environment’s settings), merged into one folder by a projected volume</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Request path</h2>
+    <div class="flow">
+      <div class="step">Browser<small>port-forward</small></div>
+      <span class="arrow">→</span>
+      <div class="step">Service<small>web:80</small></div>
+      <span class="arrow">→</span>
+      <div class="step">Pod<small>readiness passed</small></div>
+      <span class="arrow">→</span>
+      <div class="step">nginx<small>/usr/share/nginx/html</small></div>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">Served by nginx 1.27 · <span data-env="version">-</span></div></footer>
+<script src="app.js"></script>
+</body>
+</html>

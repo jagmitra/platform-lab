@@ -32,5 +32,9 @@ spec:
               mountPath: /usr/share/nginx/html
       volumes:
         - name: content
-          configMap:
-            name: web-content
+          projected:
+            sources:
+              - configMap:
+                  name: web-content
+              - configMap:
+                  name: web-env

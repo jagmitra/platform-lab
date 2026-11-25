@@ -6,7 +6,7 @@ replicas:
   - name: web
     count: 1
 configMapGenerator:
-  - name: web-content
+  - name: web-env
     behavior: replace
     files:
-      - index.html
+      - env.json
