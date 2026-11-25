@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: web
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            fleet: lab
+  template:
+    metadata:
+      name: 'web-{{.name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/jagmitra/platform-lab.git
+        targetRevision: main
+        path: 'apps/web/overlays/{{index .metadata.labels "env"}}'
+      destination:
+        server: '{{.server}}'
+        namespace: web
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
